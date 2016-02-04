@@ -1,4 +1,0 @@
-<?php
-//View
-$Pagetext = $RawText;
-

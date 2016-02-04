@@ -23,6 +23,12 @@ if (isset($_GET["q"])) {
 	$LoadPage = "index";
 }
 
+if (isset($_GET["mode"])) {
+	$SystemMode = $_GET["mode"];
+}else{
+	$SystemMode = "view";
+}
+
 //Error check
 
 if (strstr($LoadPage,"..")) {
@@ -84,6 +90,8 @@ if ($plugin["plugin"]["is"] == "enable") {
 		}
 	}
 }
+
+include "function/{$SystemMode}.php";
 
 include "theme/{$Theme}/theme.php";
 ?>
