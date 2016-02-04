@@ -15,14 +15,14 @@ echo <<< EOT
 	<meta name="author" content="{$Author}">
 	<meta name="generator" content="{$Generator}">
 	
-	<title>{$Wikiname}</title>
+	<title>{$Blogname}</title>
 	<link href="theme/{$Theme}/stylesheets/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 <div id="wrapper">
 	<div id="branding">
-		<h1><a href="index.php?q=index">{$Wikiname}</a></h1>
+		<h1><a href="index.php?q=index">{$Blogname}</a></h1>
 		{$Message}
 		<ul class="topNav">
 {$Topmenu}

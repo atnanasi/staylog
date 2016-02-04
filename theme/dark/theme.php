@@ -18,7 +18,7 @@ echo <<< EOT
 
     <link rel="stylesheet" type="text/css" media="screen" href="theme/{$Theme}/stylesheets/stylesheet.css">
 
-    <title>{$Wikiname}</title>
+    <title>{$Blogname}</title>
   </head>
 
   <body>
@@ -26,16 +26,15 @@ echo <<< EOT
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a href="index.php?q=index"><h1 id="project_title">{$Wikiname} - {$PageTitle}</a></h1>
+          <a href="index.php?q=index"><h1 id="project_title">{$Blogname} - {$Pagetitle}</a></h1>
           <h2 id="project_tagline">{$Message}</h2>
-          <
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        {$Text}
+        {$Pagetext}
       </section>
     </div>
 
@@ -45,9 +44,6 @@ echo <<< EOT
         <p>{$Footer}</p>
       </footer>
     </div>
-
-    
-
   </body>
 </html>
 EOT;

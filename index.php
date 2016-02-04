@@ -40,12 +40,12 @@ if ($Mode == "view") {
 		http_response_code(404);
 		echo error("404 NotFound",$config["system"]["pagepass"],"It's an unjust URL.",$version);
 		exit;
-	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.md")) {
-		$TextType = "markdown";
-		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.md");
 	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.php")) {
 		$TextType = "php";
 		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.php");
+	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.md")) {
+		$TextType = "markdown";
+		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.md");
 	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.html")) {
 		$TextType = "html";
 		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.html");
@@ -60,7 +60,7 @@ if ($Mode == "view") {
 $RawTopmenu = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["topmenu"]}");
 $RawSidebar = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["sidebar"]}");
 
-$Wikiname = $config["general"]["name"];
+$Blogname = $config["general"]["name"];
 $Message = $config["general"]["message"];
 $Topmenu = $RawTopmenu;
 $Pagetitle = "{$LoadPage}";
@@ -68,7 +68,6 @@ $Pagedate = "";
 $Sidebar = $RawSidebar;
 $Footer = $config["general"]["footer"];
 $Theme = $config["general"]["theme"];
-
 
 $Author = $config["meta"]["author"];
 $Description = $config["meta"]["description"];
