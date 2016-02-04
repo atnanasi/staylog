@@ -1,70 +1,69 @@
 <?php
-//Staylog index.php-1.00
+//Staylog index.php
 //Copyright (c) 2016 Atnanasi
 
 $root = __DIR__;
 $version = "1.00";
 $query  ;
-require_once"lib/acwiki/core.php";
+require_once"lib/stayfunc.php";
 
 $config = parse_ini_file("config/staylog.ini",1);
 $plugin = parse_ini_file("config/plugin.ini",1);
+
+if (ExistsPage($config["system"]["error"])) {
+	$Error = GetPage($config["system"]["error"]);
+	$ErrorPage = "{$config["system"]["pagepass"]}/{$config["system"]["error"]}/{$Error["filename"]}";
+}else{
+	exit(1);
+}
 
 if (isset($_GET["q"])) {
 	$LoadPage = htmlspecialchars($_GET["q"]);
 }else{
 	$LoadPage = "index";
 }
-if (isset($_GET["mode"]) == 0) {
-	$Mode = "view";
-}else{
-	$Mode = htmlspecialchars($_GET["mode"]);
-	$TextType = "special";
-}
 
 //Error check
 
-if (strstr($Mode,"..")) {
+if (strstr($LoadPage,"..")) {
 	http_response_code(404);
-	echo error("404 NotFound",$config["system"]["pagepass"],"It's an unjust URL.",$version);
+	echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+	exit;
+}elseif (ExistsPage($LoadPage)) {
+	$PageData = GetPage ($LoadPage);
+}else{
+	http_response_code(404);
+	echo Error("404 NotFound",$ErrorPage,"The appointed file does not exist.",$version);
 	exit;
 }
-if (!(file_exists("system/{$Mode}.php"))) {
+
+if (ExistsPage($config["general"]["topmenu"])) {
+	$TopmenuArray = GetPage($config["general"]["topmenu"]);
+	$RawTopmenu = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["topmenu"]}/{$TopmenuArray["filename"]}");
+}else{
 	http_response_code(404);
-	echo error("404 NotFound",$config["system"]["pagepass"],"The appointed mode does not exist.",$version);
+	echo Error("404 NotFound",$ErrorPage,"System file does not exist.",$version);
 	exit;
 }
 
-if ($Mode == "view") {
-	if (strstr($LoadPage,"..")) {
-		http_response_code(404);
-		echo error("404 NotFound",$config["system"]["pagepass"],"It's an unjust URL.",$version);
-		exit;
-	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.php")) {
-		$TextType = "php";
-		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.php");
-	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.md")) {
-		$TextType = "markdown";
-		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.md");
-	}elseif (file_exists("{$config["system"]["pagepass"]}/{$LoadPage}.html")) {
-		$TextType = "html";
-		$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}.html");
-	}else{
-		http_response_code(404);
-		echo error("404 NotFound",$config["system"]["pagepass"],"The appointed file does not exist.",$version);
-		exit;
-	}
+if (ExistsPage($config["general"]["sidebar"])) {
+	$SidebarArray = GetPage($config["general"]["sidebar"]);
+	$RawSidebar = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["sidebar"]}/{$SidebarArray["filename"]}");
+}else{
+	http_response_code(404);
+	echo Error("404 NotFound",$ErrorPage,"System file does not exist.",$version);
+	exit;
 }
 
-
-$RawTopmenu = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["topmenu"]}");
-$RawSidebar = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["sidebar"]}");
+$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}/{$PageData["filename"]}");
 
 $Blogname = $config["general"]["name"];
 $Message = $config["general"]["message"];
 $Topmenu = $RawTopmenu;
-$Pagetitle = "{$LoadPage}";
-$Pagedate = "";
+$Pagetitle = $PageData["title"];
+$TextType = $PageData["type"];
+$Pagedate = $PageData["date"];
+$Pagetime = $PageData["time"];
 $Sidebar = $RawSidebar;
 $Footer = $config["general"]["footer"];
 $Theme = $config["general"]["theme"];
@@ -86,9 +85,5 @@ if ($plugin["plugin"]["is"] == "enable") {
 	}
 }
 
-//SpecialPageLoader
-if (!($Mode == "view")) {
-	include "system/{$Mode}.php";
-}
 include "theme/{$Theme}/theme.php";
 ?>

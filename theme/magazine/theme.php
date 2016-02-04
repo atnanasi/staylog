@@ -33,7 +33,7 @@ echo <<< EOT
 			<div class="contant_1_left">
 				<h2>
 					{$Pagetitle}
-					<span>{$Pagedate}</span>
+					<span>{$Pagedate} {$Pagetime}</span>
 				</h2>
 				{$Pagetext}
 			</div>
