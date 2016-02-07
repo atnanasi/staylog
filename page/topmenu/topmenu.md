@@ -1,2 +1,0 @@
-Top,index;
-aiueo,gorira;

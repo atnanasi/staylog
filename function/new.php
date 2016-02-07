@@ -13,6 +13,7 @@ Tags(A comma-separated):<input type="text" name="tags" size="80" value=""><br>
 TextType(Recommend:MarkDown):<select name="type">
 <option value="markdown">MarkDown</option>
 <option value="html">HTML</option>
+<option value="text">PlainText</option>
 <option value="php">PHP</option>
 </select>
 Priority(Recommend:standard):<select name="priority">
@@ -26,7 +27,6 @@ Priority(Recommend:standard):<select name="priority">
 PageFileName:<input type="text" name="file" size="20" value="{$LoadPage}"><br>
 <input type="submit" value="Save" />
 </form>
-</html>
 EOT;
 
 $Pagetitle = "New";

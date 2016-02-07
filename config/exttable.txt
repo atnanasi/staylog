@@ -1,3 +1,4 @@
-markdown,md;
-html,html;
-php,php;
+markdown,md
+text,txt
+html,html
+php,php

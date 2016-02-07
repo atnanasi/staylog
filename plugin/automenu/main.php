@@ -4,7 +4,7 @@
 
 $Topmenu = "";
 $MenuTemplate = file_get_contents("theme/{$Theme}/topmenu.php");
-$MenuKeys = explode(";", rtrim(rtrim($RawTopmenu, "\n"), ";"));
+$MenuKeys = explode("\n", \rtrim($RawTopmenu, "\n"));
 foreach($MenuKeys as $MenuKey) {
 	$MenuData = explode(",", $MenuKey);
 	$MenuReplace1 = str_replace("{Name}",$MenuData[0],$MenuTemplate);

@@ -22,7 +22,7 @@ echo <<< EOT
 <body>
 <div id="wrapper">
 	<div id="branding">
-		<h1><a href="index.php?q=index">{$Blogname}</a></h1>
+		<h1><a href="index.php">{$Blogname}</a></h1>
 		{$Message}
 		<ul class="topNav">
 {$Topmenu}
@@ -31,10 +31,6 @@ echo <<< EOT
 	<div id="contant">
 		<div class="contant_1">
 			<div class="contant_1_left">
-				<h2>
-					{$Pagetitle}
-					<span>{$Pagedate} {$Pagetime}</span>
-				</h2>
 				{$Pagetext}
 			</div>
 		<div class="sideBar">

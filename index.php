@@ -37,6 +37,10 @@ if (strstr($LoadPage,"..")) {
 }elseif (ExistsPage($LoadPage)) {
 	$PageData = GetPage ($LoadPage);
 	$RawText = file_get_contents("page/{$LoadPage}/{$PageData["filename"]}");
+}elseif ($LoadPage === "" & $SystemMode === "view"){
+	$LoadPage = "index";
+	$PageData = GetPage ($LoadPage);
+	$RawText = file_get_contents("page/{$LoadPage}/{$PageData["filename"]}");
 }else{
 	$PageData["filename"] = "";
 	$PageData["title"] = "";
@@ -88,6 +92,10 @@ $Styletype = $config["meta"]["styletype"];
 $Scripttype = $config["meta"]["scripttype"];
 $Robots = $config["meta"]["robots"];
 $Generator = $config["meta"]["generator"];
+
+if ($TextType === "text") {
+	$Pagetext = $RawText;
+}
 
 //PluginLoader
 if ($plugin["plugin"]["is"] == "enable") { 

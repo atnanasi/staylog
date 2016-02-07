@@ -40,6 +40,13 @@ function edit() {
 	$host  = $_SERVER["HTTP_HOST"];
 	$uri   = rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
 	
+	if (isset($_GET["q"])) {
+		$FileName = $_GET["q"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
 	//ファイル存在？
 	if (!(ExistsPage($FileName))) {
 		http_response_code(404);
@@ -48,13 +55,6 @@ function edit() {
 	}
 	
 	//追加チェック
-	if (isset($_GET["q"])) {
-		$FileName = $_GET["q"];
-	}else{
-		http_response_code(404);
-		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
-		exit;
-	}
 	
 	if (isset($_POST["name"])) {
 		$NewName = $_POST["name"];

@@ -75,7 +75,8 @@ function write_ini_file($keys,$filename) {
 }
 
 function GetExtension($Type,$Table) {
-	$TableKeys = explode(";", rtrim(rtrim($Table, "\n"), ";"));
+	$RetData = "";
+	$TableKeys = explode("\n", rtrim($Table, "\n"));
 	foreach($TableKeys as $TableKey) {
 		$TableData = explode(",", $TableKey);
 		if ($TableData[0] === $Type) {
@@ -83,5 +84,23 @@ function GetExtension($Type,$Table) {
 		}
 	}
 	return $RetData;
+}
+
+function GetPageList() {
+	$files = scandir("page/");
+	$RetArray = "";
+	$i = 0;
+	foreach($files as $file => $sutehage) {
+		if ((strpos($files[$file], ".")) === false) {
+			$RetArray[$i] = $files[$file];
+			$i++;
+		}
+	}
+	return $RetArray;
+}
+
+function ParseFile($TextType, $RawText) {
+	include "plugin/{$TextType}/main.php";
+	return $Pagetext;
 }
 ?>

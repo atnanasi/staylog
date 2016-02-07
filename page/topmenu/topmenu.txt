@@ -1,0 +1,3 @@
+Top,index
+about,about
+edit,{$LoadPage}&mode=edit

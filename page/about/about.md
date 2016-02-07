@@ -9,4 +9,5 @@ You can get [here](https://github.com/atnanasi/staylog)
 # License and Copyright
 The MIT License. See [LICENSE](LICENSE).
 
+Staylog 1.00
 Copyright (c) 2016 Atnanasi

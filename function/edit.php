@@ -13,6 +13,7 @@ Tags(A comma-separated):<input type="text" name="tags" size="80" value="{$PageTa
 TextType(Recommend:MarkDown):<select name="type">
 <option value="markdown">MarkDown</option>
 <option value="html">HTML</option>
+<option value="text">PlainText</option>
 <option value="php">PHP</option>
 </select>
 Priority(Recommend:standard):<select name="priority">
@@ -21,12 +22,11 @@ Priority(Recommend:standard):<select name="priority">
 <option value="system">System</option>
 </select>
 <br>
-<input type="radio" name="filename" value="auto" checked>Automatic generation (Example {$unixtime})
-<input type="radio" name="filename" value="manual">Manual
+<input type="radio" name="filename" value="auto">Automatic generation (Example {$unixtime})
+<input type="radio" name="filename" value="manual" checked>Manual
 PageFileName:<input type="text" name="file" size="20" value="{$LoadPage}"><br>
 <input type="submit" value="Save" />
 </form>
-</html>
 EOT;
 
 $Pagetitle = "Edit - {$Pagetitle}";
