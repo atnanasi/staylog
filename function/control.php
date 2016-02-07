@@ -25,15 +25,14 @@ if (isset($_GET["do"])) {
 	exit;
 }
 
-if (isset($_GET["q"])) {
-	$FileName = $_GET["q"];
+if (function_exists($do)) {
+	$do();
 }else{
 	http_response_code(404);
 	echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
 	exit;
 }
 
-$do();
 
 function edit() {
 	global $FileName, $ErrorPage, $version;
@@ -49,6 +48,14 @@ function edit() {
 	}
 	
 	//追加チェック
+	if (isset($_GET["q"])) {
+		$FileName = $_GET["q"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+	
 	if (isset($_POST["name"])) {
 		$NewName = $_POST["name"];
 	}else{
@@ -135,6 +142,111 @@ function edit() {
 	file_put_contents("page/{$FileName}/{$config["general"]["filename"]}", $NewText);
 	
 	header("Location: http://$host$uri/index.php?q={$FileName}");
+}
+
+function newpage() {
+	global $FileName, $ErrorPage, $version;
+	//編集モード
+	$host  = $_SERVER["HTTP_HOST"];
+	$uri   = rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
+	
+	//ファイル存在？
+	if (ExistsPage($FileName)) {
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"The appointed file exist.",$version);
+		exit;
+	}
+	
+	//追加チェック
+	if (isset($_POST["name"])) {
+		$NewName = $_POST["name"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+
+	if (isset($_POST["text"])) {
+		$NewText = $_POST["text"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+
+	if (isset($_POST["file"])) {
+		$NewFile = $_POST["file"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+
+	if (isset($_POST["filename"])) {
+		if ($_POST["filename"] === "auto") {
+			$NewFileName = time();
+		}else{
+			$NewFileName = $NewFile;
+		}
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+	
+	if (isset($_POST["type"])) {
+		$Type = $_POST["type"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+	
+	if (isset($_POST["priority"])) {
+		$Priority = $_POST["priority"];
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+	
+	if (isset($_POST["tags"])) {
+		$Tag = $_POST["tags"];
+	}else{
+		$Tag = "";
+	}
+	
+	$Table = file_get_contents("config/exttable.txt");
+	if (GetExtension($Type, $Table)) {
+		$Extension = GetExtension($Type, $Table);
+	}else{
+		http_response_code(404);
+		echo Error("404 NotFound",$ErrorPage,"It's an unjust URL.",$version);
+		exit;
+	}
+	
+	//各種ファイル生成
+	mkdir("page/{$NewFileName}");
+	touch("page/{$NewFileName}/config.ini");
+	touch("page/{$NewFileName}/{$NewFileName}.{$Extension}");
+	
+	//設定変更
+	$config["general"]["filename"] = "{$NewFileName}.{$Extension}";
+	$config["general"]["title"] = $NewName;
+	$config["general"]["type"] = "markdown";
+	$config["general"]["author"] = "atnanasi";
+	$config["general"]["date"] = date("Y/m/d");
+	$config["general"]["time"] = date("H:i:s");
+	$config["general"]["type"] = $Type;
+	$config["general"]["tag"] = $Tag;
+	$config["general"]["priority"] = $Priority;
+	
+	write_ini_file($config, "page/{$NewFileName}/config.ini");
+	
+	//ファイルへ書き込み
+	file_put_contents("page/{$NewFileName}/{$config["general"]["filename"]}", $NewText);
+	
+	header("Location: http://$host$uri/index.php?q={$NewFileName}");
 }
 
 ?>

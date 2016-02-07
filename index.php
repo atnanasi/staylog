@@ -19,7 +19,7 @@ if (ExistsPage($config["system"]["error"])) {
 if (isset($_GET["q"])) {
 	$LoadPage = htmlspecialchars($_GET["q"]);
 }else{
-	$LoadPage = "index";
+	$LoadPage = "";
 }
 
 if (isset($_GET["mode"])) {
@@ -38,9 +38,15 @@ if (strstr($LoadPage,"..")) {
 	$PageData = GetPage ($LoadPage);
 	$RawText = file_get_contents("page/{$LoadPage}/{$PageData["filename"]}");
 }else{
-	http_response_code(404);
-	echo Error("404 NotFound",$ErrorPage,"The appointed file does not exist.",$version);
-	exit;
+	$PageData["filename"] = "";
+	$PageData["title"] = "";
+	$PageData["type"] = "";
+	$PageData["author"] = "";
+	$PageData["date"] = "";
+	$PageData["time"] = "";
+	$PageData["tag"] = "";
+	$PageData["priority"] = "";
+	$RawText = "";
 }
 
 if (ExistsPage($config["general"]["topmenu"])) {

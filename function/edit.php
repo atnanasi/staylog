@@ -1,5 +1,5 @@
 <?php
-//Staylog edit.php-1.00
+//Staylog edit.php
 //Copyright (c) 2016 Atnanasi
 
 //PageText
