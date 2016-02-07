@@ -1,0 +1,3 @@
+markdown,md;
+html,html;
+php,php;

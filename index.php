@@ -4,7 +4,6 @@
 
 $root = __DIR__;
 $version = "1.00";
-$query  ;
 require_once"lib/stayfunc.php";
 
 $config = parse_ini_file("config/staylog.ini",1);
@@ -12,7 +11,7 @@ $plugin = parse_ini_file("config/plugin.ini",1);
 
 if (ExistsPage($config["system"]["error"])) {
 	$Error = GetPage($config["system"]["error"]);
-	$ErrorPage = "{$config["system"]["pagepass"]}/{$config["system"]["error"]}/{$Error["filename"]}";
+	$ErrorPage = "page/{$config["system"]["error"]}/{$Error["filename"]}";
 }else{
 	exit(1);
 }
@@ -37,6 +36,7 @@ if (strstr($LoadPage,"..")) {
 	exit;
 }elseif (ExistsPage($LoadPage)) {
 	$PageData = GetPage ($LoadPage);
+	$RawText = file_get_contents("page/{$LoadPage}/{$PageData["filename"]}");
 }else{
 	http_response_code(404);
 	echo Error("404 NotFound",$ErrorPage,"The appointed file does not exist.",$version);
@@ -45,7 +45,7 @@ if (strstr($LoadPage,"..")) {
 
 if (ExistsPage($config["general"]["topmenu"])) {
 	$TopmenuArray = GetPage($config["general"]["topmenu"]);
-	$RawTopmenu = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["topmenu"]}/{$TopmenuArray["filename"]}");
+	$RawTopmenu = file_get_contents("page/{$config["general"]["topmenu"]}/{$TopmenuArray["filename"]}");
 }else{
 	http_response_code(404);
 	echo Error("404 NotFound",$ErrorPage,"System file does not exist.",$version);
@@ -54,20 +54,21 @@ if (ExistsPage($config["general"]["topmenu"])) {
 
 if (ExistsPage($config["general"]["sidebar"])) {
 	$SidebarArray = GetPage($config["general"]["sidebar"]);
-	$RawSidebar = file_get_contents("{$config["system"]["pagepass"]}/{$config["general"]["sidebar"]}/{$SidebarArray["filename"]}");
+	$RawSidebar = file_get_contents("page/{$config["general"]["sidebar"]}/{$SidebarArray["filename"]}");
 }else{
 	http_response_code(404);
 	echo Error("404 NotFound",$ErrorPage,"System file does not exist.",$version);
 	exit;
 }
 
-$RawText = file_get_contents("{$config["system"]["pagepass"]}/{$LoadPage}/{$PageData["filename"]}");
-
 $Blogname = $config["general"]["name"];
 $Message = $config["general"]["message"];
 $Topmenu = $RawTopmenu;
 $Pagetitle = $PageData["title"];
 $TextType = $PageData["type"];
+$PageTag = $PageData["tag"];
+$PageAuthor = $PageData["author"];
+$PagePriority = $PageData["priority"];
 $Pagedate = $PageData["date"];
 $Pagetime = $PageData["time"];
 $Sidebar = $RawSidebar;

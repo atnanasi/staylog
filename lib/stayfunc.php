@@ -40,4 +40,48 @@ function GetPage($PageName) {
 	}
 }
 
+function SetPage($PageName,$Data) {
+	if (file_exists("page/{$PageName}/config.ini")) {
+		
+		$Config["general"]["filename"] = $Data["filename"];
+		$Config["general"]["title"] = $Data["title"];
+		$Config["general"]["type"] = $Data["type"];
+		$Config["general"]["author"] = $Data["author"];
+		$Config["general"]["date"] = $Data["date"];
+		$Config["general"]["time"] = $Data["time"];
+		$Config["general"]["tag"] = $Data["tag"];
+		$Config["general"]["priority"] = $Data["priority"];
+		write_ini_file($Config, "page/{$PageName}/config.ini");
+		
+		return 1;
+	}else{
+		return 0;
+	}
+}
+
+function write_ini_file($keys,$filename) {
+	if (!(file_exists($filename))) {
+		touch ($filename);
+	}
+	$WriteData = "";
+	foreach ($keys as $section => $sections) {
+		$WriteData .= "[$section]\n";
+		foreach ($sections as $key => $keyss) {
+			$WriteData .= "{$key}=\"{$keys[$section][$key]}\"\n";
+		}
+		$WriteData .= "\n";
+	}
+	file_put_contents($filename, $WriteData);
+}
+
+function GetExtension($Type,$Table) {
+	$TableKeys = explode(";", rtrim(rtrim($Table, "\n"), ";"));
+	foreach($TableKeys as $TableKey) {
+		$TableData = explode(",", $TableKey);
+		if ($TableData[0] === $Type) {
+			$RetData = $TableData[1];
+		}
+	}
+	return $RetData;
+}
 ?>
