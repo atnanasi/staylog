@@ -1,4 +1,4 @@
-# staylog
+# Staylog
 Powerful and Simple weblog engine.
 [![][mit-badge]][mit]
 
